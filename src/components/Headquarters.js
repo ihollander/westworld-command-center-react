@@ -11,10 +11,10 @@ class Headquarters extends Component {
     return(
       <Grid celled='internally'>
         <Grid.Column width={8}>
-          <ColdStorage hosts={this.props.hosts} />
+          <ColdStorage onHostClick={this.props.onHostClick} hosts={this.props.hosts} />
         </Grid.Column>
         <Grid.Column width={5}>
-          <Details />
+          <Details onChangeHostArea={this.props.onChangeHostArea} onActiveToggle={this.props.onActiveToggle} selectedHost={this.props.selectedHost} areas={this.props.areas} />
         </Grid.Column>
         <Grid.Column width={3}>
 

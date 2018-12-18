@@ -1,29 +1,42 @@
 import '../stylesheets/HostInfo.css'
 import React, { Component } from 'react'
 import { Radio, Icon, Card, Grid, Image, Dropdown, Divider } from 'semantic-ui-react'
+// import { hostname } from 'os';
 
 
 class HostInfo extends Component {
-  state = {
-    options: [{key: "some_area" text: "Some Area" value: "some_area"}, {key: "another_area" text: "Another Area" value: "another_area"}],
-    value: "some_area",
-    // This state is just to show how the dropdown component works.
-    // Options have to be formatted in this way (array of objects with keys of: key, text, value)
-    // Value has to match the value in the object to render the right text.
+  constructor(props) {
+    super(props)
+    const options = props.areas.map(a => ({
+      key: a.name,
+      text: a.formattedName,
+      value: a.name
+    }))
 
-    // IMPORTANT: But whether it should be stateful or not is entirely up to you. Change this component however you like.
+    this.state = {
+      options,
+      value: props.host.area
+    }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return {...state, value: props.host.area}
+  }
 
+  // componentDidUpdate(prevProps, prevState, snap) {
+  //   console.log(prevProps)
+  //   console.log(prevState)
+  //   console.log(snap)
+  // }
 
   handleChange = (e, {value}) => {
-    // the 'value' attribute is given via Semantic's Dropdown component.
-    // Put a debugger in here and see what the "value" variable is when you pass in different options.
-    // See the Semantic docs for more info: https://react.semantic-ui.com/modules/dropdown/#usage-controlled
+    this.props.onChangeHostArea(this.props.host.id, value)
+    this.setState({ value })
   }
 
-  toggle = () => {
-    console.log("The radio button fired");
+  toggle = (e, data) => {
+    const active = data.checked
+    this.props.onActiveToggle(this.props.host.id, active)
   }
 
   render(){
@@ -31,7 +44,7 @@ class HostInfo extends Component {
       <Grid>
         <Grid.Column width={6}>
           <Image
-            src={ /* pass in the right image here */ }
+            src={this.props.host.imageUrl}
             floated='left'
             size='small'
             className="hostImg"
@@ -41,16 +54,13 @@ class HostInfo extends Component {
           <Card>
             <Card.Content>
               <Card.Header>
-                {"Bob"} | { true ? <Icon name='man' /> : <Icon name='woman' />}
-                { /* Think about how the above should work to conditionally render the right First Name and the right gender Icon */ }
+                {this.props.host.name} | { this.props.host.gender === "Male" ? <Icon name='man' /> : <Icon name='woman' />}
               </Card.Header>
               <Card.Meta>
                 <Radio
                   onChange={this.toggle}
-                  label={"Active"}
-                  {/* Sometimes the label should take "Decommissioned". How are we going to conditionally render that? */}
-                  checked={true}
-                  {/* Checked takes a boolean and determines what position the switch is in. Should it always be true? */}
+                  label={this.props.host.active ? "Active" : "Decommissioned"}
+                  checked={this.props.host.active}
                   slider
                 />
               </Card.Meta>
