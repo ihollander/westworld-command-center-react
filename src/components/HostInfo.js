@@ -39,6 +39,10 @@ class HostInfo extends Component {
     this.props.onActiveToggle(this.props.host.id, active)
   }
 
+  get name() {
+    return  (this.props.host.lastName === 'n/a') ? this.props.host.firstName : `${this.props.host.firstName} ${this.props.host.lastName}`
+  }
+
   render(){
     return (
       <Grid>
@@ -54,7 +58,7 @@ class HostInfo extends Component {
           <Card>
             <Card.Content>
               <Card.Header>
-                {this.props.host.name} | { this.props.host.gender === "Male" ? <Icon name='man' /> : <Icon name='woman' />}
+                {this.name} | { this.props.host.gender === "Male" ? <Icon name='man' /> : <Icon name='woman' />}
               </Card.Header>
               <Card.Meta>
                 <Radio

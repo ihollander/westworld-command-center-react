@@ -2,11 +2,11 @@ import React from 'react';
 import '../stylesheets/Area.css'
 import HostList from './HostList'
 
-const Area = ({ name, formattedName, limit, hosts, onHostClick }) => (
+const Area = ({ name, formattedName, limit, hosts, onHostClick, selectedHost }) => (
 
   <div className='area' id={name}>
     <h3 className='labels'>{formattedName}</h3>
-    <HostList onHostClick={onHostClick} hosts={hosts} />
+    <HostList selectedHost={selectedHost} onHostClick={onHostClick} hosts={hosts} />
   </div>
 
 )
